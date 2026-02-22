@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCARF — Sharman Crawford Aid & Relief Fund</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #2E3A59;
+      --navy-light: #3d4f73;
+      --gold: #C8A96E;
+      --gold-light: #e4c998;
+      --sky: #8AAEC8;
+      --cream: #FAF8F4;
+      --warm-white: #FFFDF9;
+      --text: #2a2a2a;
+      --muted: #7a7a7a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ===== NOISE TEXTURE OVERLAY ===== */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 3rem;
+      background: rgba(250, 248, 244, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(200, 169, 110, 0.2);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .nav-logo img {
+      height: 40px;
+      width: auto;
+    }
+
+    .nav-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--navy);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--navy);
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 4rem 6rem 6rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 6vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      margin-bottom: 2.5rem;
+      margin-top: 0.3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+    }
+
+    .hero-desc {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #555;
+      max-width: 420px;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1rem 2.2rem;
+      background: var(--navy);
+      color: var(--cream);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: all 0.3s;
+      border: 2px solid var(--navy);
+    }
+
+    .btn-primary:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--navy);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1rem 2.2rem;
+      background: transparent;
+      color: var(--navy);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+      border: 2px solid var(--navy);
+      transition: all 0.3s;
+    }
+
+    .btn-secondary:hover {
+      background: var(--navy);
+      color: var(--cream);
+      transform: translateY(-2px);
+    }
+
+    .hero-right {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--navy);
+      overflow: hidden;
+    }
+
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 60% 40%, rgba(200, 169, 110, 0.15) 0%, transparent 70%),
+                  radial-gradient(ellipse at 20% 80%, rgba(138, 174, 200, 0.1) 0%, transparent 60%);
+    }
+
+    /* Decorative concentric arcs */
+    .hero-decoration {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      border: 1px solid rgba(200, 169, 110, 0.1);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .hero-decoration:nth-child(2) { width: 450px; height: 450px; border-color: rgba(200,169,110,0.15); }
+    .hero-decoration:nth-child(3) { width: 300px; height: 300px; border-color: rgba(200,169,110,0.2); }
+
+    .hero-logo-wrap {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      opacity: 0;
+      animation: fadeIn 1.2s 0.6s forwards;
+    }
+
+    .hero-logo-wrap img {
+      width: 260px;
+      filter: brightness(0) invert(1);
+      opacity: 0.92;
+    }
+
+    .hero-logo-tagline {
+      margin-top: 1.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    /* ===== DIVIDER ===== */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0 6rem;
+      margin: 3rem 0;
+    }
+
+    .divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); }
+    .divider-icon { color: var(--gold); font-size: 1.2rem; }
+
+    /* ===== SECTION BASE ===== */
+    section {
+      padding: 6rem 6rem;
+    }
+
+    .section-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title em { font-style: italic; color: var(--gold); }
+
+    /* ===== HOW IT WORKS ===== */
+    #how {
+      background: var(--warm-white);
+      border-top: 1px solid rgba(200,169,110,0.15);
+      border-bottom: 1px solid rgba(200,169,110,0.15);
+    }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-top: 3.5rem;
+    }
+
+    .how-card {
+      position: relative;
+      padding: 2.5rem 2rem;
+      border: 1px solid rgba(46, 58, 89, 0.1);
+      background: var(--cream);
+      transition: all 0.4s;
+    }
+
+    .how-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(46, 58, 89, 0.08);
+    }
+
+    .how-number {
+      position: absolute;
+      top: -1.2rem;
+      left: 2rem;
+      background: var(--navy);
+      color: var(--gold);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      width: 2.4rem;
+      height: 2.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .how-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 0.8rem;
+      margin-top: 0.5rem;
+    }
+
+    .how-card p {
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: #666;
+    }
+
+    /* ===== STORY SECTION ===== */
+    #story {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .story-image-wrap {
+      position: relative;
+    }
+
+    .story-image-frame {
+      width: 100%;
+      aspect-ratio: 4/5;
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .story-image-frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(200,169,110,0.2) 0%, transparent 50%);
+    }
+
+    /* Placeholder knitting pattern */
+    .knit-pattern {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 1rem;
+      opacity: 0.3;
+    }
+
+    .knit-row {
+      display: flex;
+      gap: 4px;
+    }
+
+    .knit-stitch {
+      width: 18px;
+      height: 14px;
+      border: 1.5px solid var(--gold);
+      border-radius: 50% 50% 40% 40%;
+    }
+
+    .story-accent-box {
+      position: absolute;
+      bottom: -2rem;
+      right: -2rem;
+      width: 160px;
+      height: 160px;
+      background: var(--gold);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .accent-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: var(--navy);
+      line-height: 1;
+    }
+
+    .accent-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--navy);
+      font-weight: 500;
+      text-align: center;
+      margin-top: 0.3rem;
+    }
+
+    .story-text p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: #555;
+      margin-bottom: 1.2rem;
+    }
+
+    .story-text p strong {
+      color: var(--navy);
+      font-weight: 500;
+    }
+
+    .quote-block {
+      margin: 2rem 0;
+      padding: 1.5rem 2rem;
+      border-left: 3px solid var(--gold);
+      background: rgba(200, 169, 110, 0.06);
+    }
+
+    .quote-block p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: var(--navy);
+      line-height: 1.6;
+      margin-bottom: 0 !important;
+    }
+
+    /* ===== VOLUNTEERS ===== */
+    #volunteers {
+      background: var(--navy);
+      color: var(--cream);
+    }
+
+    #volunteers .section-title { color: var(--cream); }
+    #volunteers .section-title em { color: var(--gold); }
+    #volunteers .section-eyebrow { color: var(--gold); }
+
+    .volunteers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 3rem;
+    }
+
+    .volunteer-card {
+      padding: 2.5rem 2rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(200,169,110,0.1);
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .volunteer-card:hover {
+      background: rgba(200,169,110,0.08);
+      border-color: rgba(200,169,110,0.3);
+    }
+
+    .volunteer-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .volunteer-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+
+    .volunteer-card p {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ===== BUY SECTION ===== */
+    #buy {
+      background: linear-gradient(135deg, var(--cream) 0%, #f0ece4 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #buy::before {
+      content: 'SCARF';
+      position: absolute;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20vw;
+      font-weight: 300;
+      color: rgba(46, 58, 89, 0.04);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    #buy .section-title { position: relative; z-index: 1; }
+    #buy .section-eyebrow { position: relative; z-index: 1; }
+
+    .buy-desc {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #555;
+      max-width: 600px;
+      margin: 0 auto 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .buy-cards {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .price-card {
+      background: var(--warm-white);
+      border: 1px solid rgba(46,58,89,0.12);
+      padding: 2.5rem 2.5rem 3rem;
+      width: 280px;
+      text-align: center;
+      transition: all 0.4s;
+      position: relative;
+    }
+
+    .price-card:hover {
+      border-color: var(--gold);
+      box-shadow: 0 24px 48px rgba(46,58,89,0.1);
+      transform: translateY(-6px);
+    }
+
+    .price-card.featured {
+      border-color: var(--navy);
+      background: var(--navy);
+      color: var(--cream);
+    }
+
+    .price-badge {
+      position: absolute;
+      top: -0.8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 0.3rem 1rem;
+      white-space: nowrap;
+    }
+
+    .price-amount {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .price-card.featured .price-amount { color: var(--gold); }
+
+    .price-currency {
+      font-size: 1.2rem;
+      vertical-align: super;
+    }
+
+    .price-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .price-card.featured .price-label { color: rgba(255,255,255,0.5); }
+
+    .price-includes {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: #666;
+      margin-bottom: 2rem;
+    }
+
+    .price-card.featured .price-includes { color: rgba(255,255,255,0.7); }
+
+    .price-divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(200,169,110,0.4), transparent);
+      margin: 1.2rem 0;
+    }
+
+    .buy-note {
+      margin-top: 3rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-style: italic;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.5);
+      padding: 3rem 6rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .footer-logo img {
+      height: 36px;
+      filter: brightness(0) invert(1);
+      opacity: 0.6;
+    }
+
+    .footer-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-middle {
+      text-align: center;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+
+    .footer-masonic {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      font-style: italic;
+      color: rgba(200,169,110,0.6);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-right {
+      text-align: right;
+      font-size: 0.78rem;
+    }
+
+    .footer-right a {
+      color: rgba(200,169,110,0.7);
+      text-decoration: none;
+      display: block;
+      margin-top: 0.4rem;
+    }
+
+    .footer-right a:hover { color: var(--gold); }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { min-height: 340px; }
+      .hero-left { padding: 7rem 2rem 3rem; }
+      section { padding: 4rem 2rem; }
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      #story { grid-template-columns: 1fr; gap: 3rem; }
+      .how-grid, .volunteers-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; text-align: center; padding: 2.5rem 2rem; }
+      .footer-right { text-align: center; }
+      .divider { padding: 0 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">
+      <img src="SCARF.jpeg" alt="SCARF Logo" />
+      <span class="nav-brand">SCARF</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#story">Our Story</a></li>
+      <li><a href="#volunteers">Our People</a></li>
+      <li><a href="#buy">Get a Scarf</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-left">
+      <p class="hero-eyebrow">Sharman Crawford Aid & Relief Fund</p>
+      <h1 class="hero-title">Warmth,<br /><em>freely given.</em></h1>
+      <p class="hero-subtitle">Cape Town · Est. in fellowship &amp; goodwill</p>
+      <p class="hero-desc">
+        Every winter, our brothers and sisters — pensioners in retirement homes and lekker volunteers from all walks of life — knit and sew scarves by hand, one stitch at a time, for those sleeping rough on the streets of our city.
+      </p>
+      <div class="hero-cta">
+        <a href="#buy" class="btn-primary">Buy a SCARF</a>
+        <a href="#story" class="btn-secondary">Our Story</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-decoration"></div>
+      <div class="hero-decoration"></div>
+      <div class="hero-decoration"></div>
+      <div class="hero-logo-wrap">
+        <img src="SCARF.jpeg" alt="SCARF" />
+        <p class="hero-logo-tagline">Built on light &amp; love</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div class="reveal">
+      <p class="section-eyebrow">The Journey of a SCARF</p>
+      <h2 class="section-title">From nimble fingers<br />to <em>warm shoulders</em></h2>
+    </div>
+    <div class="how-grid">
+      <div class="how-card reveal">
+        <div class="how-number">1</div>
+        <h3>Hands at Work</h3>
+        <p>Our dedicated volunteers — many of them ouma's and oupa's in retirement homes around the city — knit and sew each scarf with remarkable care. Every loop is a small act of ubuntu.</p>
+      </div>
+      <div class="how-card reveal">
+        <div class="how-number">2</div>
+        <h3>You Buy, We Build</h3>
+        <p>When you purchase a SCARF, the proceeds go directly toward materials for the next batch and a well-deserved cup of coffee for the volunteers. No admin fees, no laaities taking a cut — just goodwill, end to end.</p>
+      </div>
+      <div class="how-card reveal">
+        <div class="how-number">3</div>
+        <h3>Delivered with Dignity</h3>
+        <p>The scarves are distributed to homeless individuals across Cape Town before winter bites. Each one is handed over personally, with a kind word — because warmth is more than just wool.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section id="story">
+    <div class="story-image-wrap reveal">
+      <div class="story-image-frame">
+        <img src="SCARFS_knitters.png" alt="Volunteers knitting scarves in Cape Town" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+      </div>
+      <div class="story-accent-box">
+        <span class="accent-number">100<span style="font-size:1.5rem">%</span></span>
+        <span class="accent-label">Volunteer<br />Made</span>
+      </div>
+    </div>
+
+    <div class="story-text reveal">
+      <p class="section-eyebrow">Our Story</p>
+      <h2 class="section-title">A small idea,<br /><em>stitched together</em></h2>
+
+      <p>SCARF began quietly — the way the best things do. A few people, bound by a shared sense of brotherly love, relief, and truth, looked around and asked: what can we actually do, right now, for the most vulnerable among us?</p>
+
+      <div class="quote-block">
+        <p>"The strength of a community is measured not by its tallest pillars, but by how warmly it wraps those who are left out in the cold."</p>
+      </div>
+
+      <p>The answer was simple: <strong>scarves</strong>. Knitted and sewn by residents of local retirement homes — many of whom are still sharp as a tack and chuffed to have a purpose — and by community volunteers who give their Sunday afternoons to the cause.</p>
+
+      <p>The name SCARF is no accident. Every thread in a scarf is individually fragile — but woven together, by <strong>square and compass</strong>, they hold against any storm. That's what we're about. Pulling people together. Keeping the cold out.</p>
+
+      <p>We are based in Cape Town, and we are lekker proud of it. This city has a big heart, and SCARF is just one small stitch in it.</p>
+    </div>
+  </section>
+
+  <!-- VOLUNTEERS -->
+  <section id="volunteers">
+    <div class="reveal" style="text-align:center;margin-bottom:1rem;">
+      <p class="section-eyebrow">The People Behind Every Stitch</p>
+      <h2 class="section-title">Our <em>builders</em></h2>
+      <p style="color:rgba(255,255,255,0.55);font-size:1rem;max-width:520px;margin:1rem auto 0;line-height:1.8;">
+        SCARF is built on the hours freely given by good people. Here's who makes it possible.
+      </p>
+    </div>
+    <div class="volunteers-grid">
+      <div class="volunteer-card reveal">
+        <div class="volunteer-icon">🧓</div>
+        <h3>Retirement Home Residents</h3>
+        <p>Oumas and oupas whose hands still have magic in them. They knit during morning tea, after lunch, and whenever the TV's too boring — which is often.</p>
+        <img src="Gemini_Generated_Image_wobr4mwobr4mwobr.png" alt="A dedicated volunteer knitting a scarf at home" style="width:100%;margin-top:1.5rem;border-radius:0;object-fit:cover;height:220px;opacity:0.9;" />
+      </div>
+      <div class="volunteer-card reveal">
+        <div class="volunteer-icon">🤝</div>
+        <h3>Community Volunteers</h3>
+        <p>Men and women from all walks of life who showed up — and kept showing up. People who believe that <strong style="color:rgba(200,169,110,0.8);">on the level</strong>, we are all equal and all responsible for one another.</p>
+      </div>
+      <div class="volunteer-card reveal">
+        <div class="volunteer-icon">🌍</div>
+        <h3>Our Donors</h3>
+        <p>People like you, who buy a scarf — knowing it goes to someone sleeping rough, wrapped in something made with care, by someone who took the time. That's ubuntu, bru.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUY -->
+  <section id="buy">
+    <p class="section-eyebrow reveal">Make a Difference</p>
+    <h2 class="section-title reveal">Buy a SCARF.<br /><em>Pass the warmth on.</em></h2>
+    <p class="buy-desc reveal">
+      Your contribution covers the cost of materials and treats our volunteers to a well-earned cup of coffee. Every rand spent here keeps someone warmer this winter — and puts a smile on the face of the person who made it.
+    </p>
+
+    <div class="buy-cards">
+      <div class="price-card reveal">
+        <div class="price-amount"><span class="price-currency">R</span>150</div>
+        <p class="price-label">One SCARF</p>
+        <div class="price-divider"></div>
+        <p class="price-includes">One handmade scarf delivered to someone in need. Your name recorded as a donor.</p>
+      </div>
+
+      <div class="price-card featured reveal">
+        <div class="price-badge">Most Popular</div>
+        <div class="price-amount"><span class="price-currency">R</span>350</div>
+        <p class="price-label">Three SCARFs + Coffee</p>
+        <div class="price-divider" style="background:linear-gradient(to right, transparent, rgba(200,169,110,0.3), transparent);"></div>
+        <p class="price-includes">Three scarves to the homeless, plus a round of coffee for the volunteer team. Lekker.</p>
+      </div>
+
+      <div class="price-card reveal">
+        <div class="price-amount"><span class="price-currency">R</span>600</div>
+        <p class="price-label">Bundle of Six</p>
+        <div class="price-divider"></div>
+        <p class="price-includes">Six scarves, a full platter of koeksisters for the volunteers, and our sincere gratitude.</p>
+      </div>
+    </div>
+
+    <p class="buy-note reveal">
+      To order or make a donation, contact us directly — details below. All contributions are used transparently and accounted for.<br />
+      <em>We work in the light, and what we do is done openly.</em>
+    </p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      <img src="SCARF.jpeg" alt="SCARF" />
+      <div>
+        <div class="footer-brand">SCARF</div>
+        <div style="font-size:0.7rem;letter-spacing:0.08em;margin-top:2px;">Sharman Crawford Aid & Relief Fund</div>
+      </div>
+    </div>
+
+    <div class="footer-middle">
+      <p class="footer-masonic">Friendship · Charity · Brotherly Love</p>
+      <p style="margin-top:0.6rem;font-size:0.72rem;">Cape Town, South Africa</p>
+      <p style="margin-top:0.3rem;font-size:0.7rem;opacity:0.5;">© 2025 SCARF — All scarves made with love</p>
+    </div>
+
+    <div class="footer-right">
+      <p style="font-size:0.75rem;margin-bottom:0.4rem;">Get in touch</p>
+      <a href="/cdn-cgi/l/email-protection#bdd4d3dbd2fdcededccfdb93d2cfda93c7dc"><span class="__cf_email__" data-cfemail="5e373038311e2d3d3f2c3870312c3970243f">[email&#160;protected]</span></a>
+      <a href="#buy">Order a Scarf</a>
+    </div>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
