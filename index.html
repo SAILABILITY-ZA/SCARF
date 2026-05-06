@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SCARF — Sharman Crawford Aid & Relief Fund</title>
+  <title>SCARF — Scarfs for Good | Cape Town</title>
+  <meta name="description" content="SCARF — Scarfs for Good. Handmade scarves knitted by elderly volunteers and distributed to homeless individuals across Cape Town before winter bites. Buy one, pass the warmth on." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -231,7 +232,6 @@
                   radial-gradient(ellipse at 20% 80%, rgba(138, 174, 200, 0.1) 0%, transparent 60%);
     }
 
-    /* Decorative concentric arcs */
     .hero-decoration {
       position: absolute;
       width: 600px;
@@ -389,7 +389,6 @@
       background: linear-gradient(135deg, rgba(200,169,110,0.2) 0%, transparent 50%);
     }
 
-    /* Placeholder knitting pattern */
     .knit-pattern {
       width: 100%;
       height: 100%;
@@ -769,7 +768,7 @@
   <!-- HERO -->
   <section class="hero" id="home">
     <div class="hero-left">
-      <p class="hero-eyebrow">Sharman Crawford Aid & Relief Fund</p>
+      <p class="hero-eyebrow">Scarfs for Good · Cape Town</p>
       <h1 class="hero-title">Warmth,<br /><em>freely given.</em></h1>
       <p class="hero-subtitle">Cape Town · Est. in fellowship &amp; goodwill</p>
       <p class="hero-desc">
@@ -840,7 +839,7 @@
 
       <p>The answer was simple: <strong>scarves</strong>. Knitted and sewn by residents of local retirement homes — many of whom are still sharp as a tack and chuffed to have a purpose — and by community volunteers who give their Sunday afternoons to the cause.</p>
 
-      <p>The name SCARF is no accident. Every thread in a scarf is individually fragile — but woven together, by <strong>square and compass</strong>, they hold against any storm. That's what we're about. Pulling people together. Keeping the cold out.</p>
+      <p>The name SCARF is no accident. Every thread in a scarf is individually fragile — but woven together, they hold against any storm. That's what we're about. Pulling people together. Keeping the cold out.</p>
 
       <p>We are based in Cape Town, and we are lekker proud of it. This city has a big heart, and SCARF is just one small stitch in it.</p>
     </div>
@@ -865,7 +864,7 @@
       <div class="volunteer-card reveal">
         <div class="volunteer-icon">🤝</div>
         <h3>Community Volunteers</h3>
-        <p>Men and women from all walks of life who showed up — and kept showing up. People who believe that <strong style="color:rgba(200,169,110,0.8);">on the level</strong>, we are all equal and all responsible for one another.</p>
+        <p>Men and women from all walks of life who showed up — and kept showing up. People who believe that we are all equal and all responsible for one another.</p>
       </div>
       <div class="volunteer-card reveal">
         <div class="volunteer-icon">🌍</div>
@@ -953,7 +952,6 @@
   </footer>
 
   <script>
-    // Scroll reveal
     const revealEls = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
@@ -966,7 +964,6 @@
 
     revealEls.forEach(el => observer.observe(el));
 
-    // Trigger reveal for elements already in view on load
     window.addEventListener('load', () => {
       revealEls.forEach(el => {
         const rect = el.getBoundingClientRect();
