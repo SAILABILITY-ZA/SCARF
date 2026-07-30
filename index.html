@@ -643,6 +643,41 @@
       margin: 1.2rem 0;
     }
 
+    .buy-btn {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.85rem 2rem;
+      background: var(--navy);
+      color: var(--cream);
+      text-decoration: none;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+      border: 2px solid var(--navy);
+      transition: all 0.3s;
+    }
+
+    .buy-btn:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--navy);
+      transform: translateY(-2px);
+    }
+
+    .price-card.featured .buy-btn {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--navy);
+    }
+
+    .price-card.featured .buy-btn:hover {
+      background: var(--gold-light);
+      border-color: var(--gold-light);
+      color: var(--navy);
+    }
+
     .buy-note {
       margin-top: 3rem;
       font-size: 0.85rem;
@@ -905,6 +940,7 @@
         <p class="price-label">Subsidised SCARF</p>
         <div class="price-divider"></div>
         <p class="price-includes">Limited availability — only when yarn is donated or corporate sponsors offset the cost. A dignified scarf for someone in need.</p>
+        <a class="buy-btn" href="https://pay.yoco.com/scarf?amount=150&amp;reference=Subsidised-SCARF" target="_blank" rel="noopener">Buy this SCARF</a>
       </div>
 
       <div class="price-card featured reveal">
@@ -913,6 +949,7 @@
         <p class="price-label">One SCARF</p>
         <div class="price-divider" style="background:linear-gradient(to right, transparent, rgba(200,169,110,0.3), transparent);"></div>
         <p class="price-includes">Covers all materials and leaves a small surplus to support the elderly home and fund the next scarf. This is the sweet spot — meaningful, fair, and felt.</p>
+        <a class="buy-btn" href="https://pay.yoco.com/scarf?amount=250&amp;reference=One-SCARF" target="_blank" rel="noopener">Buy this SCARF</a>
       </div>
 
       <div class="price-card reveal">
@@ -920,6 +957,7 @@
         <p class="price-label">Supporter SCARF</p>
         <div class="price-divider"></div>
         <p class="price-includes">Buy one, help make the next one possible. Ideal for professionals, corporate buyers, and those who believe in paying it forward properly.</p>
+        <a class="buy-btn" href="https://pay.yoco.com/scarf?amount=350&amp;reference=Supporter-SCARF" target="_blank" rel="noopener">Buy this SCARF</a>
       </div>
     </div>
 
